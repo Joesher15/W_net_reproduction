@@ -7,7 +7,7 @@ from dataloader import DataLoader
 from metrics import Results
 
 if __name__ == '__main__':
-    vis = True
+    vis = False
     test_loader = DataLoader()
 
     scores = 0
