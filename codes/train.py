@@ -12,11 +12,11 @@ import torch
 import torch.nn.functional as F
 from torchvision import transforms
 import time
-import util
-from autoencoder_dataset import AutoencoderDataset
+from util import util
+from util.autoencoder_dataset import AutoencoderDataset
 from config import Config
 from model import WNet
-from soft_n_cut_loss1 import NCutLoss2D
+from soft_n_cut_loss import NCutLoss2D
 
 
 def main():
@@ -96,9 +96,9 @@ def main():
     ################################################
     reconstruction_loss_array=[]
     soft_n_cut_loss_array=[]
-    title='losses' +  time.strftime("_%H_%M_%S", time.localtime())
+    loss_dir='../results/training_losses/'+'losses' +  time.strftime("_%H_%M_%S", time.localtime())
     losses=[]
-    np.savetxt(title+'.csv', losses, fmt='%.2f', delimiter=',', header="ReconstructionLoss,  SoftNcutLoss")
+    np.savetxt(loss_dir+'.csv', losses, fmt='%.2f', delimiter=',', header="ReconstructionLoss,  SoftNcutLoss")
     ################################################
     for epoch in range(config.num_epochs):
         running_loss = 0.0
@@ -140,9 +140,9 @@ def main():
             schedulerW.step()
 
             if config.debug and (i % 50) == 0:
-                print(i, l_reconstruction, l_soft_n_cut)
-                print(optimizerE.param_groups[0]['lr'])
-                print(optimizerW.param_groups[0]['lr'])
+                print("it. ",i, " | ReconstructionLoss: ",l_reconstruction.item()," | SoftNCutLoss: ", l_soft_n_cut.item())
+                # print(optimizerE.param_groups[0]['lr'])
+                # print(optimizerW.param_groups[0]['lr'])
 
             # print statistics
             running_loss += l_reconstruction.item()
