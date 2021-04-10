@@ -135,6 +135,9 @@ def main():
         # plt.show()
         target_segmentation = target_segmentation[:, 0:cut_w, 0:cut_h]
 
+        if (i%50==0):
+            print("Prediction No",i)
+
         # NOTE: problem - the above won't get all patches, only ones that fit. (Resolved by above cutting code)
         patches = image.unfold(0, 3, 3).unfold(1, size, size).unfold(2, size, size)
         # print(patches.shape)

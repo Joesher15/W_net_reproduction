@@ -96,7 +96,9 @@ def main():
     ################################################
     reconstruction_loss_array=[]
     soft_n_cut_loss_array=[]
-    loss_dir='../results/training_losses/'+'losses' +  time.strftime("_%H_%M_%S", time.localtime())
+
+    tittle='losses' + time.strftime("_%H_%M_%S", time.localtime())
+    loss_dir=config.loss_csvfile_destination+tittle
     losses=[]
     np.savetxt(loss_dir+'.csv', losses, fmt='%.2f', delimiter=',', header="ReconstructionLoss,  SoftNcutLoss")
     ################################################
@@ -164,7 +166,7 @@ def main():
         ####################################
         losses=np.vstack((reconstruction_loss_array,soft_n_cut_loss_array)).T
         
-        with open(title+'.csv', 'a') as abc:
+        with open(loss_dir+'.csv', 'a') as abc:
           np.savetxt(abc, losses, delimiter=",")
         
         #####################################

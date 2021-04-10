@@ -26,7 +26,9 @@ class TestSetLoader(Dataset):
 
         self.mode = mode # The "test" directory name
         # self.data_path  = os.path.join(config.data_dir, mode)
-        self.images_dir = os.path.join(config.test_path, 'BSR/BSDS500/data/images/')
+
+
+        self.images_dir = os.path.join(config.test_path,config.test_set_image_dir )
         self.seg_dir    = os.path.join(config.test_path, 'converted_segmentaions')
         self.image_list = self.get_image_list()
 
@@ -48,7 +50,16 @@ class TestSetLoader(Dataset):
 
     def get_image_list(self):
         image_list = []
-        path_files = ["test/", "train/", "val/"]
+        #TODO: BSD 300 DOESNT HAVE VAL ==> Change to train/ test/ when using it
+
+        if (config.USE_BSD500):
+            #validation folder in the BSD500 download#
+            path_files = ["test/", "train/", "val/"]
+        else:
+            #no validation folder in the BSD300 download
+            path_files = ["test/", "train/"]
+
+
         for dir in path_files:
             load_directory=self.images_dir+dir
             for file in os.listdir(load_directory):

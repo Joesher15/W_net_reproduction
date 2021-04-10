@@ -34,15 +34,37 @@ class Config():
 
         self.variationalTranslation = 0  # Pixels, 0 for off. 1 works fine
 
+        self.loss_csvfile_destination = '../results/training_losses/'
         self.saveModel = True
 
+        # ------------------------------Predict & Test Phase -----------------------------#
+        #Flag for predicting & Metric Evaluation using BSD500
+        self.USE_BSD500=True #<<<<============= Dataset Selection
+        self.metrics_visualisation_flag = False
+        #Model Name
+        model_name="2021-04-04_23_11_33_717535"
+        # Directory from where to load the model
+        self.loaded_model = "../results/saved_models/"+model_name
 
-        #------------------------------Predict Phase -----------------------------#
+        #Converting the BSD500 gt frrom ".mat" files to ".npy" matrices required for predictions
+        #Only need to be done once after conversion to .npy files are being loaded frrom converted_segmentations folder
+        self.BSD500_preprocessing = False # True
 
-        self.BSD500_preprocessing =True #False
-        self.loaded_model="../results/saved_models/2021-04-04_23_11_33_717535"
-        self.test_path ="../datasets/test_set/"
-        self.predictions_destination="../results/test_set_predictions/"
+        #Path where both BSD500 and BSD300 are located
+        self.test_path = "../datasets/test_set/"
 
-        # ------------------------------Test Phase -----------------------------#
+        #Directory where to save the predictions made using the loaded model
+        self.predictions_destination = "../results/test_set_predictions/"
+
+        if self.USE_BSD500:
+            #Directory to load the Images of BSD 500
+            self.test_set_image_dir = 'BSR/BSDS500/data/images/'
+            self.test_set_gt_dir='/BSR/BSDS500/data/groundTruth/'
+        else:
+            #Directory to load the images of BSD300
+            self.test_set_image_dir ="BSDS300/images/"
+            self.test_set_gt_dir = 'BSDS300/groundTruth/'
+
+
+
 

@@ -5,9 +5,12 @@ from matplotlib import gridspec
 
 from util.dataloader import DataLoader
 from util.metrics import Results
+from config import Config
+
+config = Config()
 
 if __name__ == '__main__':
-    vis = True
+
     test_loader = DataLoader()
 
     scores = 0
@@ -17,8 +20,7 @@ if __name__ == '__main__':
     # record error metrics
     results = Results()
     results.initialization()
-    # print(test_loader.get)
-    # exit()
+
 
     for idx, (raw_img, raw_gt, mean_gt, raw_pred, mean_pred) in enumerate(test_loader):
 
@@ -31,7 +33,7 @@ if __name__ == '__main__':
         print(gt.shape, pred.shape)
 
         # visualization
-        if vis:
+        if (config.metrics_visualisation_flag):
             plt.figure(figsize=(20, 4))
             grid_spec = gridspec.GridSpec(1, 3, width_ratios=[3, 3, 3])
 
