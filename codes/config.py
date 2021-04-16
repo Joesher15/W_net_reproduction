@@ -1,14 +1,14 @@
 class Config():
     def __init__(self):
+        # ------------------------------ Train Phase -----------------------------#
         self.debug = True
         self.input_size = 128  # Side length of square image patch
-        self.batch_size = 2
-        self.val_batch_size = 2
+        self.batch_size = 10
+        self.val_batch_size = 4
         self.test_batch_size = 1
-        self.verbose_testing = True
 
         self.k = 64  # Number of classes
-        self.num_epochs = 2  # 250 for real
+        self.num_epochs = 36  # 36 for real
         self.data_dir = "../datasets/training_set/VOCtrainval_11-May-2012/VOCdevkit/VOC2012/JPEGImages"  # Directory of images
 
         self.showdata = False  # Debug the data augmentation by showing the data we're training on.
@@ -37,13 +37,15 @@ class Config():
         self.USE_BSD500 = True  # <<<<============= Dataset Selection
         self.metrics_visualisation_flag = False
         self.metrics_print_flag = False
+
         # Model Name
         model_name = "2021-04-16_14_31_23_999059"
+
         # Directory from where to load the model
         self.loaded_model = "../results/saved_models/" + model_name
 
         # Converting the BSD500 gt frrom ".mat" files to ".npy" matrices required for predictions
-        # Only need to be done once after conversion to .npy files are being loaded frrom converted_segmentations folder
+        # Only need to be done once after conversion to .npy files are being loaded from converted_segmentations folder
         self.BSD500_preprocessing = False  # True
 
         # Path where both BSD500 and BSD300 are located
