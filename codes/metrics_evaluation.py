@@ -21,7 +21,6 @@ if __name__ == '__main__':
     results = Results()
     results.initialization()
 
-
     for idx, (raw_img, raw_gt, mean_gt, raw_pred, mean_pred) in enumerate(test_loader):
 
         print('Image ', idx)
@@ -33,7 +32,7 @@ if __name__ == '__main__':
         print(gt.shape, pred.shape)
 
         # visualization
-        if (config.metrics_visualisation_flag):
+        if config.metrics_visualisation_flag:
             plt.figure(figsize=(20, 4))
             grid_spec = gridspec.GridSpec(1, 3, width_ratios=[3, 3, 3])
 
@@ -62,7 +61,8 @@ if __name__ == '__main__':
 
     meanSC, meanPRI, meanVI = results.get_results()
 
-    print("==================================")
-    print('mean SC is: ', meanSC)
-    print('mean PRI is: ', meanPRI)
-    print('mean VI is: ', meanVI)
+    if config.metrics_print_flag:
+        print("==================================")
+        print('mean SC is: ', meanSC)
+        print('mean PRI is: ', meanPRI)
+        print('mean VI is: ', meanVI)

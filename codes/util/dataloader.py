@@ -76,9 +76,6 @@ def _get_img_list(folder):
 
     print('Found {} images in the folder {}'.format(len(img_paths), img_directory))
 
-    # img_paths.sort()
-    # gt_paths.sort()
-    # pred_paths.sort()
 
     return img_paths, gt_paths, pred_paths
 

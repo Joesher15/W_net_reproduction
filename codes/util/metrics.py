@@ -106,7 +106,7 @@ def _match_segmentation(pred, gt):
     # joint histogram
     sumim = 1 + gt + pred * num1
 
-    hs, _ = np.histogram(sumim.flatten(), bins=np.linspace(1, num1*num2+1, num=num1*num2+1))
+    hs, _ = np.histogram(sumim.flatten(), bins=np.linspace(1, num1 * num2 + 1, num=num1 * num2 + 1))
     hs = hs.reshape(confcounts.shape[1], confcounts.shape[0]).T
 
     confcounts = confcounts + hs

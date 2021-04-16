@@ -17,17 +17,9 @@ we double the number of feature channels at each downsampling step
 We halve the number of feature channels at each upsampling step
 
 '''
-
-
-# NOTE: batch norm is up for debate
-# We want batch norm if possible, but the batch size is too low to benefit
-# So instead we do instancenorm
-
 # Note: Normalization should go before ReLU
 
 # Padding=1 because (3x3) conv leaves of 2pixels in each dimension, 1 on each side
-# Do we want non-linearity between pointwise and depthwise (separable) conv?
-# Do we want non-linearity after upconv?
 
 class ConvModule(nn.Module):
     def __init__(self, input_dim, output_dim):
@@ -40,9 +32,6 @@ class ConvModule(nn.Module):
             nn.Conv2d(input_dim, output_dim, 1),  # Pointwise (1x1) through all channels
             nn.Conv2d(output_dim, output_dim, 3, padding=1, groups=output_dim),  # Depthwise (3x3) through each channel
 
-            # nn.Conv2d(input_dim, output_dim, 3, padding=1, groups=groups1),  # Depthwise (3x3) through each channel
-            # nn.Conv2d(output_dim, output_dim, 1),  # Pointwise (1x1) through all channels
-
             nn.InstanceNorm2d(output_dim),
             nn.BatchNorm2d(output_dim),
             nn.ReLU(),
@@ -50,9 +39,6 @@ class ConvModule(nn.Module):
 
             nn.Conv2d(output_dim, output_dim, 1),
             nn.Conv2d(output_dim, output_dim, 3, padding=1, groups=output_dim),
-
-            # nn.Conv2d(output_dim, output_dim, 3, padding=1, groups=output_dim),
-            # nn.Conv2d(output_dim, output_dim, 1),
 
             nn.InstanceNorm2d(output_dim),
             nn.BatchNorm2d(output_dim),

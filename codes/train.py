@@ -30,24 +30,15 @@ def main():
     # Image loading and preprocessing #
     ###################################
 
-    # TODO: Maybe we should crop a large square, then resize that down to our patch size?
-    # For now, data augmentation must not introduce any missing pixels TODO: Add data augmentation noise
-    # TODO: Change Transormations
     train_xform = transforms.Compose([
-        # transforms.RandomCrop(224),
         transforms.Resize((config.input_size, config.input_size)),
-        # transforms.RandomCrop(config.input_size + config.variationalTranslation),  # For now, cropping down to 224
-        # transforms.RandomHorizontalFlip(),  # TODO: Add colorjitter, random erasing
         transforms.ToTensor()
     ])
     val_xform = transforms.Compose([
-        # transforms.CenterCrop(224),
         transforms.Resize((config.input_size, config.input_size)),
-        # transforms.CenterCrop(config.input_size),
         transforms.ToTensor()
     ])
 
-    # TODO: Load validation segmentation maps too  (for evaluation purposes)
     train_dataset = AutoencoderDataset("train", train_xform)
     val_dataset = AutoencoderDataset("val", val_xform)
 
@@ -92,11 +83,11 @@ def main():
     progress_images, progress_expected = next(iter(val_dataloader))
     n_iter = 1
     
-    
     ################################################
     reconstruction_loss_array=[]
     soft_n_cut_loss_array=[]
 
+    # File for storing losses during training
     tittle='losses' + time.strftime("_%H_%M_%S", time.localtime())
     loss_dir=config.loss_csvfile_destination+tittle
     losses=[]
@@ -135,25 +126,19 @@ def main():
                 reconstructions
             )
 
-            # loss = (l_reconstruction + l_soft_n_cut)
             l_reconstruction.backward(
-                retain_graph=False)  # We only need to do retain graph =true if we're backpropping from multiple heads
+                retain_graph=False)
             optimizerW.step()
             schedulerW.step()
 
             if config.debug and (i % 50) == 0:
                 print("it. ",i, " | ReconstructionLoss: ",l_reconstruction.item()," | SoftNCutLoss: ", l_soft_n_cut.item())
-                # print(optimizerE.param_groups[0]['lr'])
-                # print(optimizerW.param_groups[0]['lr'])
 
-            # print statistics
             running_loss += l_reconstruction.item()
 
             if config.showSegmentationProgress and i == 0:  # If first batch in epoch
                 util.save_progress_image(autoencoder, progress_images, epoch)
-                # optimizerE.zero_grad()  # Don't change gradient on validation
             n_iter += 1
-            # print(l_reconstruction)
             ##############################
             reconstruction_loss_array=np.append(reconstruction_loss_array,[[l_reconstruction.item()]])
             soft_n_cut_loss_array=np.append(soft_n_cut_loss_array,[[l_soft_n_cut.item()]])
