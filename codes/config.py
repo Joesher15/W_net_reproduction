@@ -34,12 +34,12 @@ class Config():
 
         # ------------------------------Predict & Test Phase -----------------------------#
         # Flag for predicting & Metric Evaluation using BSD500
-        self.USE_BSD500 = True  # <<<<============= Dataset Selection
+        self.USE_BSD500 = False  # <<<<============= Dataset Selection
         self.metrics_visualisation_flag = False
         self.metrics_print_flag = False
 
         # Model Name
-        model_name = "2021-04-16_14_31_23_999059"
+        model_name = "full_model_const_lr_k_20"
 
         # Directory from where to load the model
         self.loaded_model = "../results/saved_models/" + model_name
